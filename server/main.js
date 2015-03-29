@@ -4,37 +4,54 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 var clientConnections = [];
 
+// Create http server, responses to all requests with given code
 var server = http.createServer(function(request, response) {
    console.log((new Date()) + ' Received request for ' + request.url);
    response.writeHead(404);
    response.end();
 });
 
+// Launch http server and listen on specified port
 server.listen(8080, function() {
    console.log((new Date()) + ' Server is listening on port 8080 ');
 });
 
+// Initiate the websocket connection, using the http-server
 wsServer = new WebSocketServer({
    httpServer: server,
-   // You should not use autoAcceptConnections for production
-   // applications, as it defeats all standard cross-origin protection
-   // facilities built into the protocol and the browser.  You should
-   // *always* verify the connection's origin and decide whether or not
-   // to accept it.
    autoAcceptConnections: false
 });
 
 wsServer.on('request', function(request) {
    var connection = request.accept('echo-protocol', request.origin);
+   // Helpers for managing connections
    clientConnections.push(connection);
-   console.log((new Date()) + ' Connection accepted by ' +  connection.remoteAddress);
+
+   // Log inital connection
+   console.log((new Date()) + ' Connection accepted by ' + connection.remoteAddress);
+
+   clientConnections.forEach(function(client) {
+      var color = ["#000", "#F00", "#FF0", "#FFF", "#FF0", "pink", "red", "orange", "blue", "green", "purple", "yellow", "tomato", "darkblue"];
+      function sendOverTime() {
+         setTimeout(function() {
+               connection.sendUTF(color.shift());
+               if(color.length > 0) {
+                  sendOverTime();
+               }
+            }, 150);
+         }
+      sendOverTime();
+   });
+
+   // Send message on inital websocket connection to client
    connection.on('message', function(message) {
+      // Possible way of sending broadcast messages, not working by now
       if (message.type === 'utf8') {
-         console.log(message);
-         console.log('Received Message: ' + message.utf8Data.length + ' bytes');
+         console.log((new Date()) + ' Received Message: ' + message.utf8Data.length + ' bytes');
          connection.sendUTF(message.utf8Data);
       }
    });
+   // Log closing connection
    connection.on('close', function(reasonCode, description) {
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
    });
