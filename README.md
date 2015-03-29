@@ -12,3 +12,6 @@ ColorSocks
 #Notes
 jq for viewing json from the commandline
 
+#License
+AGPLv3 2015
+
