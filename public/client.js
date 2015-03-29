@@ -1,28 +1,28 @@
 //Bootstrapping...
-var client = new WebSocket("ws://localhost:8080", "echo-protocol");
+var socket = new WebSocket("ws://localhost:8080", "echo-protocol");
 
-client.onerror = function() {
-   console.log("Connection Error");
+socket.onerror = function() {
+   console.error("Connection Error");
 };
 
-client.onopen = function() {
+socket.onopen = function() {
    console.log((new Date()) + "WebSocket Client Connected");
 
    function sendNumber() {
-      if (client.readyState === client.OPEN) {
+      if (socket.readyState === socket.OPEN) {
          var number = Math.round(Math.random() * 0xFFFFFF);
-         client.send(number.toString());
+         socket.send(number.toString());
          setTimeout(sendNumber, 1000);
       }
    }
    sendNumber();
 };
 
-client.onclose = function() {
+socket.onclose = function() {
    console.log("echo-protocol Client Closed");
 };
 
-client.onmessage = function(e) {
+socket.onmessage = function(e) {
    if (typeof e.data === "string") {
       console.log("Received: '" + e.data + "'");
    }
