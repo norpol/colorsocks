@@ -1,0 +1,17 @@
+{
+    "name":"colorsocks",
+    "version": "0.0.1",
+    "description": "A websockets server which broadcasts colors or patterns to clients.",
+    "scripts": {
+        "start": "node server/main.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/norpol/colorsocks.git"
+    },
+    "dependencies": {
+      "websocket": "~1.0.18"
+    },
+    "homepage": "https://github.com/norpol/colorsocks",
+    "license": "AGPL"
+}
