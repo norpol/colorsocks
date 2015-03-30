@@ -30,22 +30,22 @@ wsServer.on('request', function(request) {
    // Log inital connection
    console.log((new Date()) + ' Connection accepted by ' + connection.remoteAddress);
 
-   clientConnections.forEach(function(client) {
-      var color = ["#000", "#F00", "#FF0", "#FFF", "#FF0", "pink", "red", "orange", "blue", "green", "purple", "yellow", "tomato", "darkblue"];
-      function sendOverTime() {
-         setTimeout(function() {
-               connection.sendUTF(color.shift());
-               if(color.length > 0) {
-                  sendOverTime();
-               }
-            }, 150);
-         }
-      sendOverTime();
-   });
 
    // Send message on inital websocket connection to client
    connection.on('message', function(message) {
       // Possible way of sending broadcast messages, not working by now
+      
+   clientConnections.forEach(function(client) {
+      var color = ["#000", "#F00", "#FF0", "#FFF", "#FF0", "pink", "red", "orange", "blue", "green", "purple", "yellow", "tomato", "darkblue"];
+      function sendOverTime() {
+         setTimeout(function() {
+               connection.sendUTF(color[Math.floor(Math.random() * color.length)]);
+               sendOverTime();
+            }, 150);
+         }
+      sendOverTime();
+   });
+      
       if (message.type === 'utf8') {
          console.log((new Date()) + ' Received Message: ' + message.utf8Data.length + ' bytes');
          connection.sendUTF(message.utf8Data);
