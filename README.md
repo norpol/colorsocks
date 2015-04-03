@@ -5,6 +5,7 @@ ColorSocks
 - [ ] FullScreen API
 - [ ] WebSockets
  - [ ] Broadcast message to client (json?)
+ - [ ] Dynamic ip-address of ws host
 - [ ] Canvas
  - [ ] Draw colors
  - [ ] generate color patterns on server

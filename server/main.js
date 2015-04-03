@@ -1,3 +1,5 @@
+#!/usr/bin/env node;
+'use strict';
 // nodejs websockets
 // for dependencies see also package.json
 var WebSocketServer = require('websocket').server;
@@ -17,7 +19,7 @@ server.listen(8080, function() {
 });
 
 // Initiate the websocket connection, using the http-server
-wsServer = new WebSocketServer({
+var wsServer = new WebSocketServer({
    httpServer: server,
    autoAcceptConnections: false
 });
