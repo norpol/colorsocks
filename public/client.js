@@ -1,9 +1,9 @@
 //Bootstrapping...
 if(window.location.host === "")
-   var ServerAddress = "localhost:8080";
+   var serverAddress = "ws://localhost:8080";
 else
-   var serverAddress = window.location.host;
-var socket = new WebSocket("ws://" + serverAddress, "echo-protocol");
+   var serverAddress = "ws://" + window.location.host;
+var socket = new WebSocket(serverAddress, "echo-protocol");
 socket.onerror = function() {
    console.error("Connection Error");
 };
