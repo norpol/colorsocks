@@ -34,7 +34,7 @@ wsServer.on('request', function(request) {
    console.log((new Date()) + ' Connection accepted by ' + connection.remoteAddress);
 
    // Send last recent color to freshly connectied client
-   connection.sendUTF(colors[1]);
+   connection.sendUTF(colors[0]);
 
    connection.on('message', function(message) {
       if (message.type === 'utf8') {
@@ -52,12 +52,12 @@ wsServer.on('request', function(request) {
 function sendColorMessage() {
    clientConnections.forEach(
       function(client) {
-         client.sendUTF(colors[1]);
+         client.sendUTF(colors[0]);
       });
 }
 
 function shiftTroughColors(){
-   colors.push(colors[1]);
+   colors.push(colors[0]);
    colors.shift();
 }
 
