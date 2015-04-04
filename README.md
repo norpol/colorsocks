@@ -4,9 +4,9 @@ ColorSocks
 #We need
 - [ ] FullScreen API
 - [ ] WebSockets
- - [ ] Broadcast message to client (json?)
+ - [x] Broadcast message to client (json?)
  - [ ] Dynamic ip-address of ws host
-- [ ] Canvas
+- [ ] ~Canvas?
  - [ ] Draw colors
  - [ ] generate color patterns on server
 
