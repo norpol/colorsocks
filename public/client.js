@@ -1,5 +1,14 @@
 //Bootstrapping...
-var socket = new WebSocket("ws://192.168.1.173:8080", "echo-protocol");
+if(window.location.host === "") {
+   var serverAddress = "localhost";
+   var serverPort = "8080";
+}
+else {
+   var serverAddress = window.location.host;
+   var serverPort = window.location.port;
+}
+
+var socket = new WebSocket("ws://" + serverAddress + ":" + serverPort, "echo-protocol");
 socket.onerror = function() {
    console.error("Connection Error");
 };
@@ -11,7 +20,6 @@ socket.onopen = function() {
 socket.onclose = function() {
    console.log("echo-protocol Client Closed");
 };
-
 
 socket.onmessage = function (event) {
    var background = document.getElementById("background");
