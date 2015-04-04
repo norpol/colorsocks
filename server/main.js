@@ -5,6 +5,7 @@
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 var clientConnections = [];
+var colors = ["#000", "#F00", "#FF0", "#FE0FAF", "#FF0", "pink", "red", "orange", "blue", "green", "purple", "yellow", "tomato", "darkblue"];
 
 // Create http server, responses to all requests with given code
 var server = http.createServer(function(request, response) {
@@ -32,30 +33,40 @@ wsServer.on('request', function(request) {
    // Log inital connection
    console.log((new Date()) + ' Connection accepted by ' + connection.remoteAddress);
 
+   // Send last recent color to freshly connectied client
+   connection.sendUTF(colors[1]);
 
-   // Send message on inital websocket connection to client
    connection.on('message', function(message) {
-      // Possible way of sending broadcast messages, not working by now
-      
-   clientConnections.forEach(function(client) {
-      var color = ["#000", "#F00", "#FF0", "#FFF", "#FF0", "pink", "red", "orange", "blue", "green", "purple", "yellow", "tomato", "darkblue"];
-      function sendOverTime() {
-         setTimeout(function() {
-               connection.sendUTF(color[Math.floor(Math.random() * color.length)]);
-               sendOverTime();
-            }, 150);
-         }
-      sendOverTime();
-   });
-      
       if (message.type === 'utf8') {
          console.log((new Date()) + ' Received Message: ' + message.utf8Data.length + ' bytes');
-         connection.sendUTF(message.utf8Data);
       }
    });
+
    // Log closing connection
    connection.on('close', function(reasonCode, description) {
       console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
    });
+
 });
 
+function sendColorMessage() {
+   clientConnections.forEach(
+      function(client) {
+         client.sendUTF(colors[1]);
+      });
+}
+
+function shiftTroughColors(){
+   colors.push(colors[1]);
+   colors.shift();
+}
+
+function broadcastColor() {
+   setTimeout(function() {
+      sendColorMessage();
+      shiftTroughColors();
+      broadcastColor();
+   }, 500);
+}
+
+broadcastColor();
